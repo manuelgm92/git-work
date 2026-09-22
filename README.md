@@ -209,6 +209,44 @@ body {
 
 En el caso de querer editar el contenido o abrir el código en Visual Studio Code. [Véase aquí.](#abrir-carpeta-contenedera-del-codigo-y-contenido-del-proyecto-en-visual-studio-code)
 
+#### Paso 3 — user1: añadir el workflow de integración continua
+
+Con MkDocs se consigue convertir archivos MarkDown en un sitio web de documentación profesional, limpio y ordenado de forma automática.
+Par añadir el workflow aplica los siguientes comandos y contenidos:
+
+- `nano mkdocs.yml`
+```yml
+# mkdocs.yml
+site_name: git-work
+nav:
+  - Inicio: index.md
+```
+
+- `nano docs/index.md`
+```md
+<!-- docs/index.md -->
+# git-work
+
+Documentación del repositorio colaborativo de la AE1.
+
+- [Portada del sitio](../index.html)
+- [Repositorio remoto](https://github.com/USUARIO/git-work)
+```
+
+En la ubicación donde se encuentra `git-work` (~/dpl/ae1), ejecuta los siguientes comandos:
+```bash
+mkdir -p .github/workflows docs
+# crea ci.yml, mkdocs.yml y docs/index.md con el contenido anterior
+git add .github/workflows/ci.yml mkdocs.yml docs/index.md
+git commit -m "Añade documentación con MkDocs e integración continua" \
+           -m "Workflow que construye el sitio con mkdocs build --strict en cada push y pull request; la portada enlaza al sitio y al repositorio remoto."
+git push origin main
+````
+
+
+
+
+
 ## Configuración
 Ficheros que hay que tocar y variables que hay que definir.
 
@@ -288,3 +326,22 @@ Una vez generada la clave, crea una nueva SSH key en GitHub en Profile > Setting
 
 ##### Abrir carpeta contenedera del código y contenido del proyecto en Visual Studio Code
 En el vscode del equipo antitrión se debe instalar la extensión `Dev Containers`, pulsa Comand + Shift + P introduce `Dev Containers: Attach to Running Container...` y selecciona `/dpl-lab`. Luego abre la carpeta desde vscode.
+
+<br>
+
+##### Error al construir la documentación con MkDocs.
+
+El archivo `docs/index.md` con el siguiente contenido:
+```md
+<!-- docs/index.md -->
+# git-work
+
+Documentación del repositorio colaborativo de la AE1.
+
+- [Portada del sitio](../index.html)
+- [Repositorio remoto](https://github.com/USUARIO/git-work)
+```
+
+Produce un fallo, ya que `mkdocs build --strict` construye el sitio y falla si hay enlaces rotos o páginas fuera de la navegación. Por lo que hay que quitar `- [Portada del sitio](../index.html)` del contenido, para ello, ejecuta `nano docs/index.md`y elimina esa línea.
+
+Se elimina esa línea ya que `docs/index.md` ya funciona como índice de la documentación de MkDocs.
