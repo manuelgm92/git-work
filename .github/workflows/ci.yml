@@ -1,0 +1,22 @@
+name: Construir la documentación
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar MkDocs
+        run: pip install mkdocs
+      - name: Construir el sitio
+        run: mkdocs build --strict
