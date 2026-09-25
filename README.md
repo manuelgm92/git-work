@@ -342,6 +342,6 @@ Documentación del repositorio colaborativo de la AE1.
 - [Repositorio remoto](https://github.com/USUARIO/git-work)
 ```
 
-Produce un fallo, ya que `mkdocs build --strict` construye el sitio y falla si hay enlaces rotos o páginas fuera de la navegación. Por lo que hay que quitar `- [Portada del sitio](../index.html)` del contenido, para ello, ejecuta `nano docs/index.md`y elimina esa línea.
+Produce un fallo, ya que `mkdocs build --strict` construye el sitio y falla si hay enlaces rotos o páginas fuera de la navegación. Por lo que hay que poner `- [Portada del sitio](index.md)` del contenido, para ello, ejecuta `nano docs/index.md`y modifícalo.
 
 Se elimina esa línea ya que `docs/index.md` ya funciona como índice de la documentación de MkDocs.
