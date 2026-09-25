@@ -485,6 +485,17 @@ git push origin custom-text
 
 En **GitHub**, dentro del repositorio, **Pull requests**, comenta "Revisado y probado en local.". **Merge pull request > Confirm merge**
 
+Para cerrar la issue se puede poner Closes `#1` en la PR y la cerrára automaticamente. En nuestro caso, la cerramos desde **Issues > Close issue**
+
+Luego user 2 sincroniza upstream:
+
+```bash
+cd ~/dpl/ae1-user2
+git switch main
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
 
 En la **modalidad por parejas**:
 
