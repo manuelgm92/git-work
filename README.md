@@ -483,6 +483,34 @@ git push origin custom-text
 
 ### Paso 8 — user1: aprobar, fusionar y cerrar la issue
 
+En **GitHub**, dentro del repositorio, **Pull requests**, comenta "Revisado y probado en local.". **Merge pull request > Confirm merge**
+
+
+En la **modalidad por parejas**:
+
+Aprueba el PR y fusiónalo. Si el PR incluye `Closes #1` en la descripción o en el mensaje de fusión, la issue se cierra automáticamente:
+
+```bash
+gh pr review 1 --approve --body "Revisado y probado en local."
+gh pr merge 1 --merge --delete-branch --body "Fusiona el PR #1. Closes #1."
+git switch main
+git pull
+git log --oneline --graph --all
+```
+
+**Resultado esperado**: `main` contiene el commit de fusión y la issue `#1` aparece cerrada.
+
+User2 sincroniza su fork con el repositorio original:
+
+```bash
+cd ~/dpl/ae1-user2
+git switch main
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
+Con GitHub CLI: `gh repo sync USUARIO_USER2/git-work --source USUARIO_USER1/git-work --branch main`.
+
 
 
 
