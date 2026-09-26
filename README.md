@@ -522,7 +522,130 @@ git push origin main
 ```
 Con GitHub CLI: `gh repo sync USUARIO_USER2/git-work --source USUARIO_USER1/git-work --branch main`.
 
+### Paso 9 — user1: nueva issue y cambio local sin publicar
 
+Crea la segunda issue:
+
+1. Título: `Improve UX with cool colors`.
+2. Descripción: el botón principal no destaca lo suficiente.
+
+```bash
+gh issue create --title "Improve UX with cool colors" --body "El botón principal no destaca."
+```
+
+Ahora cambia la **línea 10** de `css/cover.css` a color: `purple`; y confirma **en local, sin hacer push**: este commit es el que provocará el conflicto con el PR de user2.
+
+```bash
+# edita css/cover.css, línea 10: color: purple;
+git add css/cover.css
+git commit -m "Cambia el color del botón principal a morado" \
+           -m "Mejora el contraste del botón según la issue #2. Commit local pendiente de subir."
+git status
+# git push     <-- NO lo ejecutes todavía
+```
+
+**Resultado esperado**: `main` local tiene un commit de más que `origin/main` (ahead by 1).
+
+### Paso 10 — user2: rama cool-colors y pull request
+
+User2 (`~/dpl/ae1-user2`) parte de la main sincronizada y cambia la misma **línea 10** a otro color:
+
+```bash
+git switch main
+git pull origin main
+git switch -c cool-colors
+# edita css/cover.css, línea 10: color: darkgreen;
+git add css/cover.css
+git commit -m "Cambia el color del botón principal a verde oscuro" \
+           -m "Propuesta de color para la issue #2, pendiente de revisión."
+git push -u origin cool-colors
+```
+
+Abre el PR (base `USUARIO_USER1:main`, compare `USUARIO_USER2:cool-colors`):
+
+```bash
+gh pr create --base main --head USUARIO_USER2:cool-colors \
+  --title "Improve UX with cool colors" \
+  --body "Cambia el color del botón. Relacionado con #2."
+```
+
+**Resultado esperado**: el segundo PR está abierto. En GitHub **no** aparecerá conflicto (el commit morado de user1 solo existe en local); el conflicto se producirá al fusionar en local en el paso siguiente, que es justo lo que se quiere practicar.
+
+### Paso 11 — user1: probar el PR y resolver el conflicto¶
+
+Desde user1 (`~/dpl/ae1`), trae la rama del PR y fusiónala en tu `main` local, donde está el commit del color morado:
+
+```bash
+cd ~/dpl/ae1
+git fetch espejo cool-colors
+git switch main
+git merge espejo/cool-colors --no-edit
+```
+
+En la **modalidad por parejas**
+```bash
+# Opción B (remoto upstream configurado en el paso 7)
+git fetch upstream cool-colors
+git switch main
+git merge upstream/cool-colors --no-edit
+
+# Opción A: si usaste gh pr checkout 2, la rama ya está en local
+# git switch main
+# git merge cool-colors --no-edit
+Git para la fusión y avisa del conflicto:
+```
+
+Aparacerá un mensaje de conflicto:
+
+```
+Auto-fusionando css/cover.css
+CONFLICTO (contenido): Conflicto de fusión en css/cover.css
+Fusión automática falló; arregle los conflictos y luego realice un commit con el resultado.
+```
+
+El fichero queda con las marcas del conflicto:
+
+```css
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+<<<<<<< HEAD
+  color: purple;
+=======
+  color: darkgreen;
+>>>>>>> upstream/cool-colors
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+```
+
+Resuelve el conflicto **quedándote con el cambio de user2**(`darkgreen`) y elimina las tres líneas de marcas:
+
+```css
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: darkgreen;
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+```
+
+Después prepara el fichero y cierra la fusión:
+
+```bash
+git status                      # "ambos modificados: css/cover.css"
+git add css/cover.css
+git commit -m "Resuelve el conflicto de cover.css" \
+           -m "Fusiona la rama cool-colors conservando el color darkgreen propuesto por user2 (issue #2)."
+git log --oneline --graph --all
+```
+
+**Resultado esperado**: el conflicto queda resuelto con `darkgreen` y `main` tiene un commit de fusión. El PR puede cerrarse con un comentario que enlace ese commit de resolución:
+
+```bash
+gh pr close 2 --comment "Fusionado localmente resolviendo el conflicto en favor de darkgreen."
+```
+
+### Paso 12 — user1: commit de sombra y cierre de la issue
 
 
 
@@ -563,6 +686,7 @@ bf63157e3fff   ubuntu:24.04   "/bin/bash"   9 minutes ago   Up 9 minutes   0.0.0
 |No se puede abrir la carpeta del proyecto dentro del contenedor en Visual Studio Code|Visual Studio Code no está conectado al contenedor en ejecución o no está instalada la extensión necesaria.|Instalar la extensión `Dev Containers` y utilizar `Command + Shift + P` → `Dev Containers: Attach to Running Container...` → seleccionar `/dpl-lab` y abrir la carpeta del proyecto desde VS Code.|
 Fallo en MkDocs Build (--strict)|El archivo de índices docs/index.md contenía enlaces rotos o referencias absolutas incompatibles con la estructura estricta del linter.|Simplificar las rutas relativas dentro de mkdocs.yml y docs/index.md apuntando de forma correcta a index.md.|
 |Incompatibilidad de Fork propio en GitHub|	GitHub no permite hacer un fork de un repositorio de tu propia cuenta de usuario.|Implementar la modalidad individual con repositorio espejo (git-work-espejo), conectando las dos carpetas locales (ae1 y ae1-user2) mediante los remotos correspondientes[cite: 2].|
+| `No default remote repository has been set` al intentar usar `gh issue create`. | La herramienta `gh` CLI no sabe a qué repositorio de GitHub enviar la acción por defecto al trabajar con varios remotos (`origin` y `espejo`) en un entorno local. | Configurar el repositorio por defecto con `gh repo set-default tu-usuario/git-work` o crear la issue directamente desde la interfaz web de GitHub. |
 
 
 
