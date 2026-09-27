@@ -1,16 +1,15 @@
-# git-work
+# git-work — flujo colaborativo con Git
 
-Plantilla mínima para una página web de startup diseñada para practicar y demostrar el **flujo colaborativo profesional con Git y GitHub** (gestión de ramas, apertura de *issues*, *pull requests*, resolución de conflictos y versionado mediante *tags/releases*).
-
-Este repositorio forma parte de práctica del flujo colaborativo completo (fork simulado, issue, rama, PR, revisión, conflicto, etiqueta y release) del módulo DPL.
+Repositorio de práctica del flujo colaborativo (fork, issue, rama, PR,
+conflicto, etiqueta y release) del módulo DPL.
 
 ## Índice
 
 - [Entorno e instalación](#entorno-e-instalacion)
-- [Paso a paso de la práctica](#paso-a-paso-de-la-práctica)
 - [Configuración](#configuracion)
 - [Comprobación](#comprobacion)
-- [Problemas encontrados y solución](#problemas-encontrados-y-solución)
+- [Problemas encontrados y solución](#problemas-encontrados-y-solucion)
+- [Repositorio remoto](#repositorio-remoto)
 
 ## Entorno e instalación
 
@@ -92,7 +91,7 @@ Devolverá: sin servicio en el 80 (normal aún)
 
 --- 
 
-### Preparación del git-wrok y espejo:
+### Preparación del git-work y espejo:
 
 Para trabajar en solitario, se simula el flujo de dos usuarios (`user1` y `user2`) mediante un **repositorio espejo** en GitHub, ya que la plataforma no permite hacer *fork* de un repositorio propio.
 
@@ -100,7 +99,7 @@ Para trabajar en solitario, se simula el flujo de dos usuarios (`user1` y `user2
 2. Crea un segundo repositorio vacío llamado `git-work-espejo` en GitHub (papel de `user2`).
 
 
-## Paso a paso de la práctica
+### Paso a paso de la práctica
 
 ### Paso 1 — user1: crear el repositorio remoto y la copia local
 
@@ -571,7 +570,7 @@ gh pr create --base main --head USUARIO_USER2:cool-colors \
 
 **Resultado esperado**: el segundo PR está abierto. En GitHub **no** aparecerá conflicto (el commit morado de user1 solo existe en local); el conflicto se producirá al fusionar en local en el paso siguiente, que es justo lo que se quiere practicar.
 
-### Paso 11 — user1: probar el PR y resolver el conflicto¶
+### Paso 11 — user1: probar el PR y resolver el conflicto
 
 Desde user1 (`~/dpl/ae1`), trae la rama del PR y fusiónala en tu `main` local, donde está el commit del color morado:
 
@@ -647,7 +646,7 @@ gh pr close 2 --comment "Fusionado localmente resolviendo el conflicto en favor 
 
 ### Paso 12 — user1: commit de sombra y cierre de la issue
 
-Cambia ahora la **línea 11** de `css/cover.css` para dar sombra al botón y cierra la issue `#2` con una referencia en el mensaje:
+Cambia ahora la **línea 11** de `css/cover.css` para dar sombra al botón y cierra la issue 2 (`#3`) con una referencia en el mensaje:
 
 ```css
 text-shadow: 2px 2px 8px lightgreen;
@@ -655,14 +654,114 @@ text-shadow: 2px 2px 8px lightgreen;
 
 ```bash
 git add css/cover.css
-git commit -m "Añade sombra al botón principal y cierra la issue #2" \
+git commit -m "Añade sombra al botón principal y cierra la issue #3" \
            -m "Aplica text-shadow 2px 2px 8px lightgreen al botón secundario.
 
 Closes #2"
 git push origin main
 ```
 
-**Resultado esperado**: el commit llega a GitHub, la issue `#2` se cierra automáticamente y `git log --oneline` muestra la historia completa (PR, conflicto y sombra)
+**Resultado esperado**: el commit llega a GitHub, la issue 2 (`#3`) se cierra automáticamente y `git log --oneline` muestra la historia completa (PR, conflicto y sombra)
+
+### Paso 13 — user1: etiqueta `0.1.0` y release
+
+Etiqueta la versión siguiendo el versionado semántico y publícala:
+
+```bash
+git tag -a 0.1.0 -m "Release version 0.1.0"
+git push --follow-tags
+git tag
+git show 0.1.0
+```
+Crea la release en GitHub (**Releases > Draft a new release**, elige la etiqueta `0.1.0`, título `0.1.0` y describe los cambios) o con:
+
+```bash
+gh release create 0.1.0 --title "0.1.0" --notes "Primera versión del sitio de la startup: portada personalizada, colores y sombra."
+gh release list
+Resultado esperado: la etiqueta y la release 0.1.0 aparecen en el repositorio, apuntando al commit que cierra la issue #3.
+```
+
+**Resultado esperado**: la etiqueta y la release `0.1.0` aparecen en el repositorio, apuntando al commit que cierra la issue 2 (`#3`).
+
+### Paso 14 — Completar el README y `comprobaciones.txt`
+
+El README es la primera página del repositorio y debe contar la historia ordenada de la práctica, con un índice cuyas secciones coincidan con los criterios de la AE1:
+
+```md
+# git-work — flujo colaborativo con Git
+
+Repositorio de práctica del flujo colaborativo (fork, issue, rama, PR,
+conflicto, etiqueta y release) del módulo DPL.
+
+## Índice
+
+- [Entorno e instalación](#entorno-e-instalacion)
+- [Configuración](#configuracion)
+- [Comprobación](#comprobacion)
+- [Problemas encontrados y solución](#problemas-encontrados-y-solucion)
+- [Repositorio remoto](#repositorio-remoto)
+
+## Entorno e instalación
+Clonar el repositorio y abrir index.html en el navegador.
+
+## Configuración
+En css/cover.css, la línea 10 define el color del botón y la 11 su sombra.
+
+## Comprobación
+Comandos y salidas (git log, git remote -v, git tag, gh pr list...).
+
+## Problemas encontrados y solución
+Tabla: problema | causa | solución (incluye el conflicto de cover.css).
+
+## Repositorio remoto
+https://github.com/TU_USUARIO/git-work
+``` 
+Crea `comprobaciones.txt` con las salidas reales de los comandos y cierra con un último commit:
+
+```bash
+{
+  echo '$ git log --oneline --graph --all'
+  git log --oneline --graph --all
+  echo
+  echo '$ git remote -v'
+  git remote -v
+  echo
+  echo '$ git tag'
+  git tag
+  echo
+  echo '$ git log --format="%an <%ae>" | sort -u'
+  git log --format='%an <%ae>' | sort -u
+} > comprobaciones.txt
+```
+
+```bash
+git add README.md comprobaciones.txt
+git commit -m "Documenta la práctica y añade las comprobaciones" \
+           -m "README con índice y secciones de la rúbrica, más comprobaciones.txt con las salidas reales de los comandos."
+git push origin main
+```
+
+**Resultado esperado**: el repositorio final contiene el árbol de la AE1 y `comprobaciones.txt` con la evidencia.
+
+**Verificación**
+
+```bash
+git log --oneline --graph --all          # historia con ramas, PR y conflicto
+git status                               # working tree limpio
+git remote -v                            # origin y upstream configurados
+git tag                                  # 0.1.0
+git log --format='%an <%ae>' | sort -u   # autoría: nombre y apellidos + correo del aula virtual
+gh pr list --state all                   # los dos PR (fusionado y cerrado)
+gh issue list --state all                # las dos issues cerradas
+gh release list                          # release 0.1.0
+```
+
+En GitHub, comprueba además:
+
+* la pestaña **Actions** con el *workflow* en verde;
+* la release `0.1.0` enlazada a su etiqueta;
+* que `comprobaciones.txt` y el README se ven renderizados.
+
 
 ## Configuración
 * Estructura del repositorio: Contiene los archivos base de la plantilla HTML/CSS en la raíz, la documentación bajo la carpeta `docs/`, y las acciones automatizadas en `.github/workflows/ci.yml`.
@@ -765,4 +864,7 @@ En el vscode del equipo antitrión se debe instalar la extensión `Dev Container
 
 <br>
 
+## Repositorio remoto
 
+- [Repositorio git-work](https://github.com/manuelgm92/git-work): `https://github.com/manuelgm92/git-work`
+- [Repositorio git-work-espejo](https://github.com/manuelgm92/git-work-espejo): `https://github.com/manuelgm92/git-work-espejo`
