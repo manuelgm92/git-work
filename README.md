@@ -647,7 +647,22 @@ gh pr close 2 --comment "Fusionado localmente resolviendo el conflicto en favor 
 
 ### Paso 12 — user1: commit de sombra y cierre de la issue
 
+Cambia ahora la **línea 11** de `css/cover.css` para dar sombra al botón y cierra la issue `#2` con una referencia en el mensaje:
 
+```css
+text-shadow: 2px 2px 8px lightgreen;
+```
+
+```bash
+git add css/cover.css
+git commit -m "Añade sombra al botón principal y cierra la issue #2" \
+           -m "Aplica text-shadow 2px 2px 8px lightgreen al botón secundario.
+
+Closes #2"
+git push origin main
+```
+
+**Resultado esperado**: el commit llega a GitHub, la issue `#2` se cierra automáticamente y `git log --oneline` muestra la historia completa (PR, conflicto y sombra)
 
 ## Configuración
 * Estructura del repositorio: Contiene los archivos base de la plantilla HTML/CSS en la raíz, la documentación bajo la carpeta `docs/`, y las acciones automatizadas en `.github/workflows/ci.yml`.
@@ -687,7 +702,7 @@ bf63157e3fff   ubuntu:24.04   "/bin/bash"   9 minutes ago   Up 9 minutes   0.0.0
 Fallo en MkDocs Build (--strict)|El archivo de índices docs/index.md contenía enlaces rotos o referencias absolutas incompatibles con la estructura estricta del linter.|Simplificar las rutas relativas dentro de mkdocs.yml y docs/index.md apuntando de forma correcta a index.md.|
 |Incompatibilidad de Fork propio en GitHub|	GitHub no permite hacer un fork de un repositorio de tu propia cuenta de usuario.|Implementar la modalidad individual con repositorio espejo (git-work-espejo), conectando las dos carpetas locales (ae1 y ae1-user2) mediante los remotos correspondientes[cite: 2].|
 | `No default remote repository has been set` al intentar usar `gh issue create`. | La herramienta `gh` CLI no sabe a qué repositorio de GitHub enviar la acción por defecto al trabajar con varios remotos (`origin` y `espejo`) en un entorno local. | Configurar el repositorio por defecto con `gh repo set-default tu-usuario/git-work` o crear la issue directamente desde la interfaz web de GitHub. |
-
+|Se registró un commit con número de issue erróneo, y se hizo git push.|Error en el mensaje del commit, número de issue errónea en el comentario del commit.|Modificar y corregir el mensaje del último commit directamente en local con `git commit --amend -m "..."`. Como el commit original ya se había publicado en GitHub, actualizar el remoto sobrescribiendo la historia de forma segura con `git push origin main --force-with-lease`.|
 
 
 
