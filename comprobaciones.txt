@@ -1,4 +1,5 @@
 $ git log --oneline --graph --all
+* 4871707 Modifica comprobaciones y añade problema en el README sobre la autoría de algunos commits
 * a795478 Documenta la práctica y añade las comprobaciones
 * aa6579f docs(readme): añadir información de los pasos 13 y 14 y ajuste a los criterioes de la AE1
 * 02a8294 docs(readme): añadir información del paso 12 y solución a errores de commit
