@@ -1,4 +1,33 @@
 $ git log --oneline --graph --all
+* a795478 Documenta la práctica y añade las comprobaciones
+* aa6579f docs(readme): añadir información de los pasos 13 y 14 y ajuste a los criterioes de la AE1
+* 02a8294 docs(readme): añadir información del paso 12 y solución a errores de commit
+* 0e87b05 Añade sombra al botón principal y cierra la issue #3
+* b8b2b74 docs(readme): añadir documentación del paso a paso y añadir problema gh
+*   27e8593 Resuelve el conflicto de cover.css
+|\  
+| * db33273 Cambia el color del botón principal a verde oscuro
+* | 810d642 Cambia el color del botón principal a morado
+* | 8ff0c15 docs(readme): completar información del paso 8
+* | 93e4419 Merge branch 'main' of github.com:manuelgm92/git-work
+|\| 
+| *   427573a Merge pull request #2 from manuelgm92/custom-text
+| |\  
+| | * dcbc72c Ajusta el texto del pie de página
+| | * 01252d5 Personaliza la portada para la startup
+* | | 7a95e90 docs(readme): añadir paso 8 a la guía práctica
+|/ /  
+* / d3417a3 docs(readme): reestructurar guía y añadir sección de problemas frecuentes
+|/  
+* 84a0737 docs(mkdocs): actualiza descripción y solución del fallo para mkdocs build strict
+* c19dd90 docs(mkdocs): corregir ruta fuera del directorio docs para mkdocs build strict
+* 9186f43 Añade documentación y resolución de problema sobre MkDocs en el README
+* fb9dd4b Soluciona error en la construción de la documentación con MkDocs.
+* 3ada812 Añade documentación con MkDocs e integración continua
+* bb6dad8 Añade documentación sobre entorno e instalación al README
+* 198e5b8 Añade la página de la startup y su hoja de estilos
+* 4acdfae Initial commit
+* a811c8a Documenta la práctica y añade las comprobaciones
 * dc18571 docs(readme): añadir información de los pasos 13 y 14 y ajuste a los criterioes de la AE1
 * 005b3db docs(readme): añadir información del paso 12 y solución a errores de commit
 * c004f71 Añade sombra al botón principal y cierra la issue #3
@@ -37,5 +66,4 @@ $ git tag
 0.1.0
 
 $ git log --format="%an <%ae>" | sort -u
-Manuel Gonzalez Martinez <106698468+manuelgm92@users.noreply.github.com>
 Manuel Gonzalez Martinez <manugm1992@gmail.com>

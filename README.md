@@ -836,7 +836,7 @@ Fallo en MkDocs Build (--strict)|El archivo de índices docs/index.md contenía 
 |Incompatibilidad de Fork propio en GitHub|	GitHub no permite hacer un fork de un repositorio de tu propia cuenta de usuario.|Implementar la modalidad individual con repositorio espejo (git-work-espejo), conectando las dos carpetas locales (ae1 y ae1-user2) mediante los remotos correspondientes[cite: 2].|
 | `No default remote repository has been set` al intentar usar `gh issue create`. | La herramienta `gh` CLI no sabe a qué repositorio de GitHub enviar la acción por defecto al trabajar con varios remotos (`origin` y `espejo`) en un entorno local. | Configurar el repositorio por defecto con `gh repo set-default tu-usuario/git-work` o crear la issue directamente desde la interfaz web de GitHub. |
 |Se registró un commit con número de issue erróneo, y se hizo git push.|Error en el mensaje del commit, número de issue errónea en el comentario del commit.|Modificar y corregir el mensaje del último commit directamente en local con `git commit --amend -m "..."`. Como el commit original ya se había publicado en GitHub, actualizar el remoto sobrescribiendo la historia de forma segura con `git push origin main --force-with-lease`.|
-
+| Commits hechos desde GitHub con correo de GitHub en lugar del correo del aula virtual | Algunos commits iniciales o de fusión (`merge`) se registraron automáticamente con el correo `noreply` de GitHub en lugar del correo oficial del aula virtual. | Reescribir el historial de autoría de forma masiva utilizando un filtro de entorno (`git filter-branch`) Regenerar el archivo de comprobaciones (`comprobaciones.txt`). Sincronizar el repositorio remoto mediante un *push* forzado seguro (`git push origin main --force-with-lease`). |
 
 
 ### Uso de pendrive para trabajar desde diferentes localizaciones y/o dispositivos.
@@ -895,6 +895,30 @@ Una vez generada la clave, crea una nueva SSH key en GitHub en Profile > Setting
 ### Abrir carpeta contenedera del código y contenido del proyecto en Visual Studio Code
 
 En el vscode del equipo antitrión se debe instalar la extensión `Dev Containers`, pulsa Comand + Shift + P introduce `Dev Containers: Attach to Running Container...` y selecciona `/dpl-lab`. Luego abre la carpeta desde vscode.
+
+<br>
+
+### Gestión y unificación de autoría en el historial de commits
+
+Durante el desarrollo de la práctica, se detectó que algunos commits específicos (como el commit inicial y los procesos de fusión de ramas o *merges*) se habían registrado de forma predeterminada con el correo enmascarado de GitHub (`@users.noreply.github.com`), mientras que el resto del desarrollo utilizaba el correo oficial de la cuenta de Moodle (`alumno@gmail.com`).
+
+Para garantizar el cumplimiento estricto del criterio de la rúbrica docente (que exige una autoría unificada y limpia con el nombre del alumno y el correo oficial del aula virtual), se implementó un proceso de reescritura de metadatos históricos utilizando `git filter-branch`. 
+
+```bash
+git filter-branch --env-filter '
+CORRECT_NAME="Nombre_alumno"
+CORRECT_EMAIL="Correo_alumno"
+export GIT_COMMITTER_NAME="$CORRECT_NAME"
+export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+export GIT_AUTHOR_NAME="$CORRECT_NAME"
+export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+' --tag-name-filter cat -- --branches --tags
+```
+
+Este procedimiento permitió:
+1. Reemplazar de forma controlada el autor y el *committer* en todo el árbol de versiones del repositorio.
+2. Validar mediante la orden `git log --format='%an <%ae>' | sort -u` que el resultado devuelva una única identidad verídica.
+3. Actualizar el repositorio remoto de forma segura preservando la integridad del resto de la estructura mediante un `git push origin main --force-with-lease`.
 
 <br>
 
