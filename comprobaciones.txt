@@ -1,0 +1,41 @@
+$ git log --oneline --graph --all
+* dc18571 docs(readme): añadir información de los pasos 13 y 14 y ajuste a los criterioes de la AE1
+* 005b3db docs(readme): añadir información del paso 12 y solución a errores de commit
+* c004f71 Añade sombra al botón principal y cierra la issue #3
+* 1598d31 docs(readme): añadir documentación del paso a paso y añadir problema gh
+*   5e8a5d3 Resuelve el conflicto de cover.css
+|\  
+| * 9c56701 Cambia el color del botón principal a verde oscuro
+* | 4a33b56 Cambia el color del botón principal a morado
+* | 556ab88 docs(readme): completar información del paso 8
+* | 36d1317 Merge branch 'main' of github.com:manuelgm92/git-work
+|\| 
+| *   25b34d3 Merge pull request #2 from manuelgm92/custom-text
+| |\  
+| | * f2bcfad Ajusta el texto del pie de página
+| | * b73a91b Personaliza la portada para la startup
+* | | 51b2fb6 docs(readme): añadir paso 8 a la guía práctica
+|/ /  
+* / 092c997 docs(readme): reestructurar guía y añadir sección de problemas frecuentes
+|/  
+* b42172e docs(mkdocs): actualiza descripción y solución del fallo para mkdocs build strict
+* 9fd1360 docs(mkdocs): corregir ruta fuera del directorio docs para mkdocs build strict
+* 6309f95 Añade documentación y resolución de problema sobre MkDocs en el README
+* a7c3e2c Soluciona error en la construción de la documentación con MkDocs.
+* 7fb44aa Añade documentación con MkDocs e integración continua
+* 939294d Añade documentación sobre entorno e instalación al README
+* b0dcbc3 Añade la página de la startup y su hoja de estilos
+* 4e76817 Initial commit
+
+$ git remote -v
+espejo	git@github.com:manuelgm92/git-work-espejo.git (fetch)
+espejo	git@github.com:manuelgm92/git-work-espejo.git (push)
+origin	git@github.com:manuelgm92/git-work.git (fetch)
+origin	git@github.com:manuelgm92/git-work.git (push)
+
+$ git tag
+0.1.0
+
+$ git log --format="%an <%ae>" | sort -u
+Manuel Gonzalez Martinez <106698468+manuelgm92@users.noreply.github.com>
+Manuel Gonzalez Martinez <manugm1992@gmail.com>

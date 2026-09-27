@@ -11,6 +11,8 @@ conflicto, etiqueta y release) del módulo DPL.
 - [Problemas encontrados y solución](#problemas-encontrados-y-solucion)
 - [Repositorio remoto](#repositorio-remoto)
 
+<br>
+
 ## Entorno e instalación
 
 ### Preparación del Entorno (Docker):
@@ -98,6 +100,7 @@ Para trabajar en solitario, se simula el flujo de dos usuarios (`user1` y `user2
 1. Crea el repositorio principal `git-work` en GitHub (papel de `user1`) con licencia MIT y README.
 2. Crea un segundo repositorio vacío llamado `git-work-espejo` en GitHub (papel de `user2`).
 
+---
 
 ### Paso a paso de la práctica
 
@@ -117,6 +120,8 @@ git remote -v
 ```
 
 **Resultado esperado**: el repositorio tiene `main` con un commit inicial (README + LICENSE) y `origin` apunta a tu repositorio.
+
+<br>
 
 ### Paso 2 — user1: añadir la página y la hoja de estilos
 
@@ -228,6 +233,8 @@ body {
 
 En el caso de querer editar el contenido o abrir el código en Visual Studio Code. [Véase aquí.](#abrir-carpeta-contenedera-del-codigo-y-contenido-del-proyecto-en-visual-studio-code)
 
+<br>
+
 ### Paso 3 — user1: añadir el workflow de integración continua
 
 MkDocs consigue convertir archivos MarkDown en un sitio web de documentación profesional, limpio y ordenado de forma automática.
@@ -293,9 +300,11 @@ git add .github/workflows/ci.yml mkdocs.yml docs/index.md
 git commit -m "Añade documentación con MkDocs e integración continua" \
            -m "Workflow que construye el sitio con mkdocs build --strict en cada push y pull request; la portada enlaza al sitio y al repositorio remoto."
 git push origin main
-````
+```
 
 **Resultado esperado**: en GitHub, pestaña **Actions**, aparece la ejecución del _workflow_ en verde.
+
+<br>
 
 ### Paso 4 — user1: crear la issue del trabajo pendiente
 
@@ -315,6 +324,8 @@ gh issue create --title "Add custom text for startup contents" \
 ```
 
 **Resultado esperado**: la issue `#1` está abierta y visible en el repositorio.
+
+<br>
 
 ### Paso 5 — user2: configuración del espejo y clonado (Modalidad Individual)
 
@@ -362,6 +373,8 @@ gh repo fork USUARIO_USER1/git-work --clone
 
 **Resultado esperado**: `git remote -v` muestra `origin` (tu fork) y `upstream` (el repositorio de user1).
 
+<br>
+
 ### Paso 6 — user2: rama `custom-text` y Pull Request
 
 Desde la carpeta de user2 (`ae1-user2`), crea la rama de trabajo, personaliza los textos de index.html y abre el Pull Request:
@@ -405,6 +418,8 @@ gh pr create --base main --head USUARIO_USER2:custom-text \
 En la descripción del PR no uses `Closes #1` todavía: la issue se cerrará al fusionar. Marca la casilla **Allow edits by maintainers** para que user1 pueda hacer commits en tu rama durante la revisión.
 
 **Resultado esperado**: el PR está abierto, la integración continua se ejecuta sobre él y user1 recibe la notificación.
+
+<br>
 
 ### Paso 7 — user1: probar el PR en local y mantener la conversación
 
@@ -480,6 +495,8 @@ git push origin custom-text
 
 **Resultado esperado**: la rama `custom-text` contiene commits de user1 y de user2, y el PR refleja la conversación.
 
+<br>
+
 ### Paso 8 — user1: aprobar, fusionar y cerrar la issue
 
 En **GitHub**, dentro del repositorio, **Pull requests**, comenta "Revisado y probado en local.". **Merge pull request > Confirm merge**
@@ -521,6 +538,8 @@ git push origin main
 ```
 Con GitHub CLI: `gh repo sync USUARIO_USER2/git-work --source USUARIO_USER1/git-work --branch main`.
 
+<br>
+
 ### Paso 9 — user1: nueva issue y cambio local sin publicar
 
 Crea la segunda issue:
@@ -544,6 +563,8 @@ git status
 ```
 
 **Resultado esperado**: `main` local tiene un commit de más que `origin/main` (ahead by 1).
+
+<br>
 
 ### Paso 10 — user2: rama cool-colors y pull request
 
@@ -569,6 +590,8 @@ gh pr create --base main --head USUARIO_USER2:cool-colors \
 ```
 
 **Resultado esperado**: el segundo PR está abierto. En GitHub **no** aparecerá conflicto (el commit morado de user1 solo existe en local); el conflicto se producirá al fusionar en local en el paso siguiente, que es justo lo que se quiere practicar.
+
+<br>
 
 ### Paso 11 — user1: probar el PR y resolver el conflicto
 
@@ -644,6 +667,8 @@ git log --oneline --graph --all
 gh pr close 2 --comment "Fusionado localmente resolviendo el conflicto en favor de darkgreen."
 ```
 
+<br>
+
 ### Paso 12 — user1: commit de sombra y cierre de la issue
 
 Cambia ahora la **línea 11** de `css/cover.css` para dar sombra al botón y cierra la issue 2 (`#3`) con una referencia en el mensaje:
@@ -662,6 +687,8 @@ git push origin main
 ```
 
 **Resultado esperado**: el commit llega a GitHub, la issue 2 (`#3`) se cierra automáticamente y `git log --oneline` muestra la historia completa (PR, conflicto y sombra)
+
+<br>
 
 ### Paso 13 — user1: etiqueta `0.1.0` y release
 
@@ -682,6 +709,8 @@ Resultado esperado: la etiqueta y la release 0.1.0 aparecen en el repositorio, a
 ```
 
 **Resultado esperado**: la etiqueta y la release `0.1.0` aparecen en el repositorio, apuntando al commit que cierra la issue 2 (`#3`).
+
+<br>
 
 ### Paso 14 — Completar el README y `comprobaciones.txt`
 
@@ -762,9 +791,12 @@ En GitHub, comprueba además:
 * la release `0.1.0` enlazada a su etiqueta;
 * que `comprobaciones.txt` y el README se ven renderizados.
 
+<br>
 
 ## Configuración
 * Estructura del repositorio: Contiene los archivos base de la plantilla HTML/CSS en la raíz, la documentación bajo la carpeta `docs/`, y las acciones automatizadas en `.github/workflows/ci.yml`.
+
+<br>
 
 ## Comprobación
 
@@ -790,6 +822,8 @@ docker ps           # Indica que contenedores están en ejecución
 CONTAINER ID   IMAGE          COMMAND       CREATED         STATUS         PORTS                                                                                                                           NAMES
 bf63157e3fff   ubuntu:24.04   "/bin/bash"   9 minutes ago   Up 9 minutes   0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp, 0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   dpl-lab
 ```
+
+<br>
 
 ## Problemas encontrados y solución
 
